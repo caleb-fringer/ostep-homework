@@ -1,5 +1,8 @@
+#define _GNU_SOURCE
+
 #include <assert.h>
 #include <pthread.h>
+#include <sched.h>
 
 #include "approxcounter.h"
 
@@ -40,6 +43,32 @@ void approxcounter_reset(approx_counter_t *counter) {
     for (int i = 0; i < NUMCPUS; i++)
         pthread_mutex_unlock(&counter->local_lock[i]);
     pthread_mutex_unlock(&counter->global_lock);
+}
+
+/* Update the approximate counter. First, update the local count atomically.
+ * Then, if the local count equals/exceeds the threshold (either positive or
+ * negative), atomically update the global count and reset the local count to 0.
+ */
+void approxcounter_update(approx_counter_t *counter, int amount) {
+    int cpu = sched_getcpu();
+
+    pthread_mutex_lock(&counter->local_lock[cpu]);
+    counter->local_count[cpu] += amount;
+
+    // If we pass the threshold in the positive or negative direction...
+    if (counter->local_count[cpu] >= counter->threshold ||
+        counter->local_count[cpu] <= -counter->threshold) {
+
+        // Update global count.
+        pthread_mutex_lock(&counter->global_lock);
+        counter->global_count += counter->local_count[cpu];
+        pthread_mutex_unlock(&counter->global_lock);
+
+        // Reset the local count to 0.
+        counter->local_count[cpu] = 0;
+    }
+
+    pthread_mutex_unlock(&counter->local_lock[cpu]);
 }
 
 /* Return the (approximate) count from the global counter.
