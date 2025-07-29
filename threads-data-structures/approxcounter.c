@@ -24,3 +24,20 @@ void init(approx_counter_t *counter, int threshold) {
         assert(pthread_mutex_init(&counter->local_lock[i], NULL) == 0);
     }
 }
+
+/* Reset all counts. Must grab all the locks simultaneously, so this operation
+ * may be very slow.
+ */
+void reset(approx_counter_t *counter) {
+    pthread_mutex_lock(&counter->global_lock);
+    for (int i = 0; i < NUMCPUS; i++)
+        pthread_mutex_lock(&counter->local_lock[i]);
+
+    counter->global_count = 0;
+    for (int i = 0; i < NUMCPUS; i++)
+        counter->local_count[i] = 0;
+
+    for (int i = 0; i < NUMCPUS; i++)
+        pthread_mutex_unlock(&counter->local_lock[i]);
+    pthread_mutex_unlock(&counter->global_lock);
+}
