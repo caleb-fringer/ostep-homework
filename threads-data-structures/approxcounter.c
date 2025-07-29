@@ -9,7 +9,7 @@
  * If threshold param is < 1, threshold member is initialized to a default
  * value.
  */
-void init(approx_counter_t *counter, int threshold) {
+void approxcounter_init(approx_counter_t *counter, int threshold) {
     if (threshold < 1) {
         counter->threshold = DEFAULT_THRESHOLD;
     } else {
@@ -28,7 +28,7 @@ void init(approx_counter_t *counter, int threshold) {
 /* Reset all counts. Must grab all the locks simultaneously, so this operation
  * may be very slow.
  */
-void reset(approx_counter_t *counter) {
+void approxcounter_reset(approx_counter_t *counter) {
     pthread_mutex_lock(&counter->global_lock);
     for (int i = 0; i < NUMCPUS; i++)
         pthread_mutex_lock(&counter->local_lock[i]);
@@ -44,7 +44,7 @@ void reset(approx_counter_t *counter) {
 
 /* Return the (approximate) count from the global counter.
  */
-int getCount(approx_counter_t *counter) {
+int approxcounter_getCount(approx_counter_t *counter) {
     pthread_mutex_lock(&counter->global_lock);
     int count = counter->global_count;
     pthread_mutex_unlock(&counter->global_lock);

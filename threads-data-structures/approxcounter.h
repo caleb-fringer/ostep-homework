@@ -16,9 +16,9 @@ typedef struct {
     pthread_mutex_t local_lock[NUMCPUS];
 } approx_counter_t;
 
-void init(approx_counter_t *counter, int threshold);
-void reset(approx_counter_t *counter);
-void update(approx_counter_t *counter, int amount);
-int getCount(approx_counter_t *counter);
+void approxcounter_init(approx_counter_t *counter, int threshold);
+void approxcounter_reset(approx_counter_t *counter);
+void approxcounter_update(approx_counter_t *counter, int amount);
+int approxcounter_getCount(approx_counter_t *counter);
 
 #endif

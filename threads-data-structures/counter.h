@@ -8,10 +8,10 @@ typedef struct __counter_t {
     pthread_mutex_t lock;
 } counter_t;
 
-void init(counter_t *counter);
-void reset(counter_t *counter);
-int getCount(counter_t *counter);
-void increment(counter_t *counter);
-void decrement(counter_t *counter);
+void counter_init(counter_t *counter);
+void counter_reset(counter_t *counter);
+int counter_getCount(counter_t *counter);
+void counter_increment(counter_t *counter);
+void counter_decrement(counter_t *counter);
 
 #endif
