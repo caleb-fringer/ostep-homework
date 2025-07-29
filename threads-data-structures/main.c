@@ -7,8 +7,10 @@
 #include "trial.h"
 
 #define ITERATIONS 1000000
+#define MAX_THREADS 12
 
 int parseArgs(int argc, char *argv[]);
+void runTrials(trial_params_t *params, int numThreads);
 
 int main(int argc, char *argv[]) {
     int iterations = parseArgs(argc, argv);
@@ -19,9 +21,7 @@ int main(int argc, char *argv[]) {
                               .num_iterations = iterations,
                               .method = (void *(*)(void *)) & increment};
 
-    double time = trial(12, &trial_1);
-    printf("It took %fs to run %d add operations.\n", time,
-           trial_1.num_iterations);
+    runTrials(&trial_1, MAX_THREADS);
     return 0;
 }
 
@@ -57,4 +57,15 @@ int parseArgs(int argc, char *argv[]) {
     }
 
     return iterations;
+}
+
+/* Runs the given trial once for each number of threads in [1,numThreads],
+ * printing results to stdout.
+ */
+void runTrials(trial_params_t *params, int num_threads) {
+    for (int thread_count = 1; thread_count <= num_threads; thread_count++) {
+        double elapsed_time = trial(thread_count, params);
+        printf("It took %fs to run %d add operations on %d threads.\n",
+               elapsed_time, params->num_iterations, thread_count);
+    }
 }
