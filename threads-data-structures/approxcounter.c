@@ -41,3 +41,12 @@ void reset(approx_counter_t *counter) {
         pthread_mutex_unlock(&counter->local_lock[i]);
     pthread_mutex_unlock(&counter->global_lock);
 }
+
+/* Return the (approximate) count from the global counter.
+ */
+int getCount(approx_counter_t *counter) {
+    pthread_mutex_lock(&counter->global_lock);
+    int count = counter->global_count;
+    pthread_mutex_unlock(&counter->global_lock);
+    return count;
+}
