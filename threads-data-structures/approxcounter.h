@@ -19,6 +19,6 @@ typedef struct {
 void init(approx_counter_t *counter, int threshold);
 void reset(approx_counter_t *counter);
 void update(approx_counter_t *counter, int amount);
-int getCount(approx_counter_t);
+int getCount(approx_counter_t *counter);
 
 #endif
