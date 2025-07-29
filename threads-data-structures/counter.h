@@ -1,3 +1,6 @@
+#ifndef __COUNTER_H
+#define __COUNTER_H
+
 #include <pthread.h>
 
 typedef struct __counter_t {
@@ -10,3 +13,5 @@ void reset(counter_t *counter);
 int getCount(counter_t *counter);
 void increment(counter_t *counter);
 void decrement(counter_t *counter);
+
+#endif
