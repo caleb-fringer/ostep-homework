@@ -3,13 +3,21 @@
 
 #include <bits/time.h>
 
+#include "approxcounter.h"
 #include "counter.h"
 
 typedef union {
     counter_t counter;
+    approx_counter_t approx_counter;
 } concurrent_struct_t;
 
-typedef enum { COUNTER, LINKED_LIST, QUEUE, B_TREE } data_struct_types;
+typedef enum {
+    COUNTER,
+    APPROX_COUNTER,
+    LINKED_LIST,
+    QUEUE,
+    B_TREE
+} data_struct_types;
 
 typedef struct {
     data_struct_types type;

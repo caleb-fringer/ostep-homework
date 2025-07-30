@@ -6,7 +6,7 @@ CFLAGS := -Wall -g
 BUILD_DIR := build
 
 # Files
-SRCS := $(wildcard *.c)
+SRCS := $(filter-out test_%.c, $(wildcard *.c))
 OBJS := $(patsubst %.c,$(BUILD_DIR)/%.o,$(SRCS))
 TARGET := main
 

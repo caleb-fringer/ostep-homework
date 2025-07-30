@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "approxcounter.h"
 #include "trial.h"
 
 /* Calculate the elapsed time between two structures. Return the answer in
@@ -42,6 +43,9 @@ double trial(int num_threads, trial_params_t *params) {
     switch (params->type) {
     case COUNTER:
         counter_init((counter_t *)params->data_struct);
+        break;
+    case APPROX_COUNTER:
+        approxcounter_init((approx_counter_t *)params->data_struct, 100000);
         break;
     default:
         perror("Error initializng data structure, unknown or unimplemented "

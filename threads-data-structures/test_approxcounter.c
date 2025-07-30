@@ -63,6 +63,7 @@ void *updateCountRoutine(void *args) {
         approxcounter_update(params->counter, 1);
     return NULL;
 }
+
 void testApproxCounterMultiThread(approx_counter_t *counter, int iterations,
                                   int num_threads) {
     pthread_t *threads = malloc(sizeof(pthread_t) * num_threads);
