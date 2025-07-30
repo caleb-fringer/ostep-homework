@@ -19,7 +19,8 @@ int main(int argc, char *argv[]) {
     trial_params_t trial_1 = {.type = COUNTER,
                               .data_struct = &(concurrent_struct_t){},
                               .num_iterations = iterations,
-                              .method = (void *(*)(void *)) & increment};
+                              .method =
+                                  (void *(*)(void *)) & counter_increment};
 
     runTrials(&trial_1, MAX_THREADS);
     return 0;
