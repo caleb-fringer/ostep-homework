@@ -71,8 +71,7 @@ void approxcounter_update(approx_counter_t *counter, int amount) {
     pthread_mutex_unlock(&counter->local_lock[cpu]);
 }
 
-/* Return the (approximate) count from the global counter.
- */
+// Return the (approximate) count from the global counter.
 int approxcounter_getCount(approx_counter_t *counter) {
     pthread_mutex_lock(&counter->global_lock);
     int count = counter->global_count;

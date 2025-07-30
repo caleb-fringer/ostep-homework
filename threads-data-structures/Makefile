@@ -31,3 +31,15 @@ clean:
 
 .PHONY: all clean
 
+TESTS := test_approxcounter
+TEST_BINS := $(patsubst %,$(BUILD_DIR)/%,$(TESTS))
+
+test: $(TEST_BINS)
+	@for t in $(TEST_BINS); do \
+		echo "Running $$t..."; \
+		$$t || exit 1; \
+	done
+	@echo "All tests passed."
+
+$(BUILD_DIR)/test_%: test_%.c %.c | $(BUILD_DIR)
+	$(CC) $(CFLAGS) $^ -o $@
