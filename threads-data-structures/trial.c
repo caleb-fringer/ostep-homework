@@ -41,7 +41,7 @@ double trial(int num_threads, trial_params_t *params) {
     // Initialize the data structure
     switch (params->type) {
     case COUNTER:
-        init((counter_t *)params->data_struct);
+        counter_init((counter_t *)params->data_struct);
         break;
     default:
         perror("Error initializng data structure, unknown or unimplemented "
