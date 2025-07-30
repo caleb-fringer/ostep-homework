@@ -31,7 +31,7 @@ clean:
 
 .PHONY: all clean
 
-TESTS := test_approxcounter
+TESTS := test_linkedlist
 TEST_BINS := $(patsubst %,$(BUILD_DIR)/%,$(TESTS))
 
 test: $(TEST_BINS)
